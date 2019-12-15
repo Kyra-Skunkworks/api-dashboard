@@ -1,6 +1,6 @@
-import Layout from "../components/Layout";
-import axios from "axios";
 import { RedocStandalone } from "redoc";
+import { useRouter } from "next/router";
+import Layout from "../components/Layout";
 
 const redocOptions = {
   nativeScrollbars: true,
@@ -67,15 +67,16 @@ const redocOptions = {
   }
 };
 
-const Api = props => (
-  <Layout>
-    <div>
-      <RedocStandalone
-        specUrl="http://rebilly.github.io/RebillyAPI/openapi.json"
-        options={redocOptions}
-      />
-    </div>
-  </Layout>
-);
+const Api = props => {
+  const router = useRouter();
+
+  return (
+    <Layout>
+      <div>
+        <RedocStandalone specUrl={router.query.url} options={redocOptions} />
+      </div>
+    </Layout>
+  );
+};
 
 export default Api;
