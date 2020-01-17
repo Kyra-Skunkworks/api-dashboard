@@ -68,11 +68,13 @@ const redocOptions = {
 
 const Api = (props) => {
   const router = useRouter();
-
+  console.log('router.query', router.query);
   return (
     <Layout>
       <div>
-        <RedocStandalone specUrl={router.query.url} options={redocOptions} />
+        {router.query && router.query.url && (
+          <RedocStandalone specUrl={router.query.url} options={redocOptions} />
+        )}
       </div>
     </Layout>
   );
