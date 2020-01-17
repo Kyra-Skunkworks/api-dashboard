@@ -1,25 +1,24 @@
 import Link from 'next/link';
+import axios from 'axios';
 
 class Header extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      links: [
-        {
-          name: 'First API',
-          url: 'http://rebilly.github.io/RebillyAPI/openapi.json',
-        },
-        {
-          name: 'Second API',
-          url: 'http://rebilly.github.io/RebillyAPI/openapi.json',
-        },
-        {
-          name: 'Third API',
-          url: 'http://rebilly.github.io/RebillyAPI/openapi.json',
-        },
-      ],
+      links: [],
     };
+  }
+
+  async componentDidMount() {
+    try {
+      const res = await axios.get('http://localhost:3001/api/list');
+      const { data } = res;
+      this.setState({ links: data });
+    } catch (err) {
+      console.error(err);
+      alert('Error fetching data from the server:', err);
+    }
   }
 
   render() {
@@ -35,9 +34,12 @@ class Header extends React.Component {
         }}
       >
         {links.map((link) => (
-          <div key={link.name} style={{ margin: 5 }}>
-            <Link key={link.name} href={`/a?url=${link.url}`}>
-              <a>{link.name}</a>
+          <div key={link.title} style={{ margin: 5 }}>
+            <Link
+              key={link.fileName}
+              href={`/a?url=http://localhost:3001/api/${link.fileName}`}
+            >
+              <a>{link.title}</a>
             </Link>
           </div>
         ))}
